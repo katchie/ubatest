@@ -55,7 +55,7 @@ setGlobals() {
   elif [ $ORG -eq 3 ]; then
     ORGDOMAIN="fcmb"
     CORE_PEER_LOCALMSPID="fcmbMSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_fcmb_CA
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/fcmb.zone.com.ng/users/Admin@fcmb.zone.com.ng/msp
     if [ $PEER -eq 0 ]; then
       CORE_PEER_ADDRESS=peer0.fcmb.zone.com.ng:7051
