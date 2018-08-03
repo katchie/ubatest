@@ -180,7 +180,7 @@ function generateCerts (){
   echo "##### Generate fcmb certificates using cryptogen tool #########"
   echo "###############################################################"
 
-  (cd fcmb-artifacts
+  (cd org3-artifacts
    set -x
    cryptogen generate --config=./org3-crypto.yaml
    res=$?
