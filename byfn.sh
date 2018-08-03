@@ -430,7 +430,7 @@ COMPOSE_FILE=docker-compose-cli.yaml
 #
 COMPOSE_FILE_COUCH=docker-compose-couch.yaml
 # org3 docker compose file
-COMPOSE_FILE_fcmb=docker-compose-fcmb.yaml
+COMPOSE_FILE_fcmb=docker-compose-org3.yaml
 #
 # use golang as the default language for chaincode
 LANGUAGE=golang
