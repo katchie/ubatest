@@ -10,8 +10,8 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org3
   # ---------------------------------------------------------------------------
-  - Name: Org3
-    Domain: org3.example.com
+  - Name: fcmb
+    Domain: fcmb.zone.com.ng
     EnableNodeOUs: true
     Template:
       Count: 2

@@ -93,41 +93,41 @@ function removeUnwantedImages() {
 # Generate the needed certificates, the genesis block and start the network.
 function networkUp () {
   # generate artifacts if they don't exist
-  if [ ! -d "org3-artifacts/crypto-config" ]; then
+  if [ ! -d "fcmb-artifacts/crypto-config" ]; then
     generateCerts
     generateChannelArtifacts
     createConfigTx
   fi
-  # start org3 peers
+  # start fcmb peers
   if [ "${IF_COUCHDB}" == "couchdb" ]; then
-      IMAGE_TAG=${IMAGETAG} docker-compose -f $COMPOSE_FILE_ORG3 -f $COMPOSE_FILE_COUCH_ORG3 up -d 2>&1
+      IMAGE_TAG=${IMAGETAG} docker-compose -f $COMPOSE_FILE_fcmb -f $COMPOSE_FILE_COUCH_fcmb up -d 2>&1
   else
-      IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE_ORG3 up -d 2>&1
+      IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE_fcmb up -d 2>&1
   fi
   if [ $? -ne 0 ]; then
-    echo "ERROR !!!! Unable to start Org3 network"
+    echo "ERROR !!!! Unable to start fcmb network"
     exit 1
   fi
   echo
   echo "###############################################################"
-  echo "############### Have Org3 peers join network ##################"
+  echo "############### Have fcmb peers join network ##################"
   echo "###############################################################"
-  docker exec Org3cli ./scripts/step2org3.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
+  docker exec fcmbcli ./scripts/step2org3.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
-    echo "ERROR !!!! Unable to have Org3 peers join network"
+    echo "ERROR !!!! Unable to have fcmb peers join network"
     exit 1
   fi
   echo
   echo "###############################################################"
-  echo "##### Upgrade chaincode to have Org3 peers on the network #####"
+  echo "##### Upgrade chaincode to have fcmb peers on the network #####"
   echo "###############################################################"
   docker exec cli ./scripts/step3org3.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
-    echo "ERROR !!!! Unable to add Org3 peers on network"
+    echo "ERROR !!!! Unable to add fcmb peers on network"
     exit 1
   fi
   # finish by running the test
-  docker exec Org3cli ./scripts/testorg3.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
+  docker exec fcmbcli ./scripts/testorg3.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to run test"
     exit 1
@@ -136,7 +136,7 @@ function networkUp () {
 
 # Tear down running network
 function networkDown () {
-  docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_ORG3 -f $COMPOSE_FILE_COUCH down --volumes --remove-orphans
+  docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_fcmb -f $COMPOSE_FILE_COUCH down --volumes --remove-orphans
   # Don't remove containers, images, etc if restarting
   if [ "$MODE" != "restart" ]; then
     #Cleanup the chaincode containers
@@ -144,7 +144,7 @@ function networkDown () {
     #Cleanup images
     removeUnwantedImages
     # remove orderer block and other channel configuration transactions and certs
-    rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
+    rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./fcmb-artifacts/crypto-config/ channel-artifacts/fcmb.json
     # remove the docker-compose yaml file that was customized to the example
     rm -f docker-compose-e2e.yaml
   fi
@@ -155,7 +155,7 @@ function networkDown () {
 function createConfigTx () {
   echo
   echo "###############################################################"
-  echo "####### Generate and submit config tx to add Org3 #############"
+  echo "####### Generate and submit config tx to add fcmb #############"
   echo "###############################################################"
   docker exec cli scripts/step1org3.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
@@ -177,10 +177,10 @@ function generateCerts (){
   fi
   echo
   echo "###############################################################"
-  echo "##### Generate Org3 certificates using cryptogen tool #########"
+  echo "##### Generate fcmb certificates using cryptogen tool #########"
   echo "###############################################################"
 
-  (cd org3-artifacts
+  (cd fcmb-artifacts
    set -x
    cryptogen generate --config=./org3-crypto.yaml
    res=$?
@@ -201,16 +201,16 @@ function generateChannelArtifacts() {
     exit 1
   fi
   echo "##########################################################"
-  echo "#########  Generating Org3 config material ###############"
+  echo "#########  Generating fcmb config material ###############"
   echo "##########################################################"
-  (cd org3-artifacts
+  (cd fcmb-artifacts
    export FABRIC_CFG_PATH=$PWD
    set -x
-   configtxgen -printOrg Org3MSP > ../channel-artifacts/org3.json
+   configtxgen -printOrg fcmbMSP > ../channel-artifacts/fcmb.json
    res=$?
    set +x
    if [ $res -ne 0 ]; then
-     echo "Failed to generate Org3 config material..."
+     echo "Failed to generate fcmb config material..."
      exit 1
    fi
   )
@@ -242,9 +242,9 @@ COMPOSE_FILE=docker-compose-cli.yaml
 #
 COMPOSE_FILE_COUCH=docker-compose-couch.yaml
 # use this as the default docker-compose yaml definition
-COMPOSE_FILE_ORG3=docker-compose-org3.yaml
+COMPOSE_FILE_fcmb=docker-compose-org3.yaml
 #
-COMPOSE_FILE_COUCH_ORG3=docker-compose-couch-org3.yaml
+COMPOSE_FILE_COUCH_fcmb=docker-compose-couch-org3.yaml
 # use golang as the default language for chaincode
 LANGUAGE=golang
 # default image tag

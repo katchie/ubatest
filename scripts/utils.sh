@@ -9,7 +9,7 @@
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/zone.com.ng/orderers/orderer.zone.com.ng/msp/tlscacerts/tlsca.zone.com.ng-cert.pem
 PEER0_ORG1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/uba.zone.com.ng/peers/peer0.uba.zone.com.ng/tls/ca.crt
 PEER0_ORG2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/fcmb.zone.com.ng/peers/peer0.fcmb.zone.com.ng/tls/ca.crt
-PEER0_ORG3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.zone.com.ng/peers/peer0.org3.zone.com.ng/tls/ca.crt
+PEER0_ORG3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/fcmb.zone.com.ng/peers/peer0.fcmb.zone.com.ng/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -53,14 +53,14 @@ setGlobals() {
     fi
 
   elif [ $ORG -eq 3 ]; then
-    ORGDOMAIN="org3"
-    CORE_PEER_LOCALMSPID="Org3MSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.zone.com.ng/users/Admin@org3.zone.com.ng/msp
+    ORGDOMAIN="fcmb"
+    CORE_PEER_LOCALMSPID="fcmbMSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_fcmb_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/fcmb.zone.com.ng/users/Admin@fcmb.zone.com.ng/msp
     if [ $PEER -eq 0 ]; then
-      CORE_PEER_ADDRESS=peer0.org3.zone.com.ng:7051
+      CORE_PEER_ADDRESS=peer0.fcmb.zone.com.ng:7051
     else
-      CORE_PEER_ADDRESS=peer1.org3.zone.com.ng:7051
+      CORE_PEER_ADDRESS=peer1.fcmb.zone.com.ng:7051
     fi
   else
     echo "================== ERROR !!! ORG Unknown =================="

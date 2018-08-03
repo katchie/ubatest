@@ -12,7 +12,7 @@
 #
 
 echo
-echo "========= Getting Org3 on to your first network ========= "
+echo "========= Getting fcmb on to your first network ========= "
 echo
 CHANNEL_NAME="$1"
 DELAY="$2"
@@ -45,14 +45,14 @@ cat log.txt
 verifyResult $res "Fetching config block from orderer has Failed"
 
 joinChannelWithRetry 0 3
-echo "===================== peer0.org3 joined channel '$CHANNEL_NAME' ===================== "
+echo "===================== peer0.fcmb joined channel '$CHANNEL_NAME' ===================== "
 joinChannelWithRetry 1 3
-echo "===================== peer1.org3 joined channel '$CHANNEL_NAME' ===================== "
-echo "Installing chaincode 2.0 on peer0.org3..."
+echo "===================== peer1.fcmb joined channel '$CHANNEL_NAME' ===================== "
+echo "Installing chaincode 2.0 on peer0.fcmb..."
 installChaincode 0 3 2.0
 
 echo
-echo "========= Org3 is now halfway onto your first network ========= "
+echo "========= fcmb is now halfway onto your first network ========= "
 echo
 
 exit 0
