@@ -93,7 +93,7 @@ function removeUnwantedImages() {
 # Generate the needed certificates, the genesis block and start the network.
 function networkUp () {
   # generate artifacts if they don't exist
-  if [ ! -d "fcmb-artifacts/crypto-config" ]; then
+  if [ ! -d "org3-artifacts/crypto-config" ]; then
     generateCerts
     generateChannelArtifacts
     createConfigTx
@@ -144,7 +144,7 @@ function networkDown () {
     #Cleanup images
     removeUnwantedImages
     # remove orderer block and other channel configuration transactions and certs
-    rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./fcmb-artifacts/crypto-config/ channel-artifacts/fcmb.json
+    rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/fcmb.json
     # remove the docker-compose yaml file that was customized to the example
     rm -f docker-compose-e2e.yaml
   fi
@@ -203,7 +203,7 @@ function generateChannelArtifacts() {
   echo "##########################################################"
   echo "#########  Generating fcmb config material ###############"
   echo "##########################################################"
-  (cd fcmb-artifacts
+  (cd org3-artifacts
    export FABRIC_CFG_PATH=$PWD
    set -x
    configtxgen -printOrg fcmbMSP > ../channel-artifacts/fcmb.json
