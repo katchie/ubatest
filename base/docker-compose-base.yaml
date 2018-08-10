@@ -17,7 +17,19 @@ services:
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
-      # enabled TLS
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${CORE_PEER_NETWORKID}_behave
+      - ORDERER_HOME=/var/hyperledger/orderer            
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LEDGERTYPE=ram      
+      - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+      - CONFIGTX_ORDERER_BATCHSIZE_MAXMESSAGECOUNT=${CONFIGTX_ORDERER_BATCHSIZE_MAXMESSAGECOUNT}
+      - CONFIGTX_ORDERER_BATCHTIMEOUT=${CONFIGTX_ORDERER_BATCHTIMEOUT}
+      - CONFIGTX_ORDERER_ADDRESSES=[127.0.0.1:7050]
+           # enabled TLS      
+      - ORDERER_TLS_CLIENTAUTHREQUIRED=${ORDERER_TLS_CLIENTAUTHREQUIRED}
+      - ORDERER_TLS_CLIENTROOTCAS_FILES=/var/hyperledger/users/Admin@example.com/tls/ca.crt
+      - ORDERER_TLS_CLIENTCERT_FILE=/var/hyperledger/users/Admin@example.com/tls/client.crt
+      - ORDERER_TLS_CLIENTKEY_FILE=/var/hyperledger/users/Admin@example.com/tls/client.key      
       - ORDERER_GENERAL_TLS_ENABLED=true
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
